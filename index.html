@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz de Bandeiras - IFSP</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Quiz de Bandeiras</h1>
+    <p>Adivinhe o país da bandeira exibida no Canvas</p>
+  </header>
+
+  <main class="layout">
+    <aside class="painel-info">
+      <h2>Como Jogar</h2>
+      <ul>
+        <li>Observe a bandeira desenhada ou carregada no Canvas.</li>
+        <li>Clique na alternativa correta para ganhar pontos.</li>
+        <li>Você tem 3 vidas. Se errar, perde 1 vida.</li>
+      </ul>
+
+      <div class="creditos">
+        <h3>Créditos</h3>
+        <p><strong>Desenvolvimento:</strong> Keivison Marcelino da Cruz</p>
+        <p><strong>Disciplina:</strong> Linguagem de Script para WEB (IFSP)</p>
+      </div>
+    </aside>
+
+    <section class="area-jogo">
+      <canvas id="gameCanvas" width="600" height="360"></canvas>
+      <div id="opcoes" class="opcoes-grid"></div>
+      <button id="btn-reiniciar" class="btn-secundario" style="display: none;">Jogar Novamente</button>
+    </section>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>
