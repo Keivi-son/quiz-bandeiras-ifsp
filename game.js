@@ -3,12 +3,12 @@ const ctx = canvas.getContext("2d");
 const opcoesEl = document.getElementById("opcoes");
 const btnReiniciar = document.getElementById("btn-reiniciar");
 
-let estado = "MENU"; // "MENU", "JOGANDO", "GAMEOVER"
+let estado = "MENU";
 let pontos = 0;
 let vidas = 3;
 let perguntaAtual = null;
+let respondido = false;
 
-// Exemplo inicial de perguntas (podemos trocar por imagens depois)
 const perguntas = [
   {
     pais: "Japão",
@@ -28,8 +28,14 @@ const perguntas = [
 ];
 
 function sortearPergunta() {
-  const indice = Math.floor(Math.random() * perguntas.length);
+  let indice = Math.floor(Math.random() * perguntas.length);
+  if (perguntaAtual && perguntas.length > 1) {
+    while (perguntas[indice].pais === perguntaAtual.pais) {
+      indice = Math.floor(Math.random() * perguntas.length);
+    }
+  }
   perguntaAtual = perguntas[indice];
+  respondido = false;
   renderizarBotoes();
 }
 
@@ -41,12 +47,20 @@ function renderizarBotoes() {
     const botao = document.createElement("button");
     botao.className = "btn-opcao";
     botao.textContent = opcao;
-    botao.addEventListener("click", () => verificarResposta(opcao));
+    botao.addEventListener("click", () => verificarResposta(opcao, botao));
     opcoesEl.appendChild(botao);
   });
 }
 
-function verificarResposta(escolhida) {
+function verificarResposta(escolhida, botaoClicado) {
+  if (estado !== "JOGANDO" || respondido || !perguntaAtual) return;
+  respondido = true;
+
+  const botoes = opcoesEl.querySelectorAll("button");
+  botoes.forEach((btn) => {
+    btn.disabled = true;
+  });
+
   if (escolhida === perguntaAtual.pais) {
     pontos += 10;
   } else {
@@ -58,14 +72,17 @@ function verificarResposta(escolhida) {
     estado = "GAMEOVER";
     opcoesEl.innerHTML = "";
     btnReiniciar.style.display = "inline-block";
-  } else {
-    sortearPergunta();
+    return;
   }
+
+  sortearPergunta();
 }
 
 function iniciarJogo() {
   pontos = 0;
   vidas = 3;
+  perguntaAtual = null;
+  respondido = false;
   estado = "JOGANDO";
   btnReiniciar.style.display = "none";
   sortearPergunta();
